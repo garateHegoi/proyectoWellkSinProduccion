@@ -21,7 +21,7 @@ import com.prueba.prueba.util.NotFoundException;
 
 @RestController 
 @RequestMapping("/preguntas")
-@CrossOrigin(origins = "https://garatehegoi.github.io/proyectoWellk/")
+@CrossOrigin(origins = "https://garatehegoi.github.io")
 public class UsuarioController {
 	@Autowired
 	private UsuarioRepository usuarioDAO;
