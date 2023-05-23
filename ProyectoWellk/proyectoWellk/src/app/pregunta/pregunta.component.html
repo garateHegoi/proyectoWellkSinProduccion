@@ -1,0 +1,133 @@
+<div class="container p-8">
+  <div *ngIf="preguntaActual == 999">
+    <div class="row">
+      <div class="col-sm-4 offset-4">
+        <img src="assets/img/929.jpg">
+        <img src="assets/img/LEHENIK.jpg">
+        <h5>Plazerra zu ezagutzea</h5>
+        <img src="assets/img/separador.jpg">
+        <br />
+        <form name="form" #f="ngForm" (ngSubmit)="f.form.valid && onSubmit()" novalidate>
+          <div class="form-group">
+            <label>Helbide Elektronikoa</label>
+            <input type="email" class="form-control" name="email" [(ngModel)]="form.email" required email
+              #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.errors }" />
+            <div *ngIf="f.submitted && email.errors" class="invalid-feedback">
+              <div *ngIf="email.errors['required']">Email-a jarri behar duzu</div>
+              <div *ngIf="email.errors['email']">Email ez da zuzena</div>
+            </div>
+          </div>
+          <br />
+          <div class="form-group">
+            <label>Adina</label>
+            <input type="number" class="form-control" name="edad" [(ngModel)]="form.edad" required edad #edad="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && edad.errors }" />
+            <div *ngIf="f.submitted && edad.errors" class="invalid-feedback">
+              <div *ngIf="edad.errors['required']">Zure adina jarri behar duzu</div>
+              <div *ngIf="edad.errors['edad']">Adina okerra da</div>
+            </div>
+          </div>
+          <br />
+          <div class="form-group" style="text-align: center;">
+            <button type="submit" class="btn btn-secondary">Aurrera</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isLoggedIn">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar"
+            [style.width.%]="((preguntaActual + 1) / preguntas.length) * 100">
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngFor="let pregunta of preguntas; let i = index">
+      <div *ngIf="preguntaActual === i">
+        <div class="row">
+          <p class="text-center">
+            {{ preguntaActual + 1 }} de {{ preguntas.length }}
+          </p>
+          <div class="col-sm-4 offset-4">
+            <img [src]="preguntaActual === preguntas.length - 1 ? 'assets/img/935.jpg' : 'assets/img/930.jpg'" />
+            <h2>...GOAZEN ABIAPUNTURA...</h2>
+            <br />
+            <h5>{{ pregunta.pregunta }}</h5>
+            <div class="form-group">
+              <ul class="list-group">
+                <ng-container *ngFor="let opcion of pregunta.respuesta; let j = index">
+                  <li class="list-group-item" [ngClass]="{'img-buttons': preguntaActual === 2 && j < 10}">
+                    <div *ngIf="preguntaActual === 2 && j < 10" class="img-container"
+                      [class.selected]="pregunta.seleccionado.includes(opcion.opcion)">
+                      <img [src]="'../../assets/img/143' + (j + 1) + '.jpg'" alt=""
+                        (click)="seleccionarVarias(preguntas[preguntaActual], opcion.opcion, !pregunta.seleccionado.includes(opcion.opcion))">
+                    </div>
+                    <!-- Selección única -->
+                    <div *ngIf="!preguntas[preguntaActual]['esMultiple']">
+                      <div class="opcion-btn-container">
+                        <button type="button" class="btn btn-primary opcion-btn"
+                          [ngClass]="{'active': pregunta.seleccionado.includes(opcion.opcion)}"
+                          (click)="seleccionarRespuesta(preguntas[preguntaActual], opcion.opcion); verificarSeleccion()">
+                          {{ opcion.opcion }}
+                        </button>
+                      </div>
+                    </div>
+                    <!-- Selección múltiple -->
+                    <div *ngIf="preguntas[preguntaActual]['esMultiple'] && (preguntaActual !== 2 || j >= 10)">
+                      <div class="opcion-btn-container">
+                        <button type="button" class="btn btn-primary opcion-btn"
+                          [ngClass]="{'active': pregunta.seleccionado.includes(opcion.opcion)}"
+                          (click)="seleccionarVarias(preguntas[preguntaActual], opcion.opcion, !pregunta.seleccionado.includes(opcion.opcion)); verificarSeleccion()">
+                          {{ opcion.opcion }}
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                </ng-container>
+              </ul>
+            </div>
+            <div class="form-group" style="text-align: center;">
+              <button type="button" (click)="siguiente()" class="btn btn-warning" style="text-align: center;"
+                [disabled]="!haySeleccion || (preguntaActual === 3 && !validarOpcionesSeleccionadas(preguntas[preguntaActual]))">
+                Aurrera
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+
+
+
+<div *ngIf="preguntaActual == preguntas.length">
+  <div class="text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <img src="assets/img/936.jpg" style="width: 40%;">
+          <br>
+          <ul class="list-group">
+            <li class="list-group-item">
+              Aquí aparecerán las distintas actividades que tendrá el usuario dependiendo de lo que haya respondido tal y como aparece en el Power Point.
+            </li>
+          </ul>
+          <br>
+          <div class="form-group" style="text-align: center;">
+            <button type="button" (click)="bukatu()" class="btn btn-warning" style="text-align: center;">
+              Bukatu
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

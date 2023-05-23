@@ -1,0 +1,13 @@
+<div class="container p-8" *ngIf="!mostrarPregunta">
+  <div class="row">
+    <div class="col-sm-4 offset-4">
+      <img src="assets/img/937.jpg">
+    <h1>HAS GAITEZEN!</h1>
+    <img src="assets/img/separador.jpg">
+    <p>Elkar ezagutu dezagun! Zure oinarrizko datuak jaso zeure esperientzia hobetuko dugu. Horretarako kirol jarduerarekin zerikusia duten galderak ere egingo dizkizugu.</p>
+    <button class="btn btn-primary" (click)="mostrarPregunta = true">Aurrera</button>
+  </div>
+</div>
+</div>
+
+<app-pregunta *ngIf="mostrarPregunta"></app-pregunta>
