@@ -59,43 +59,62 @@
             <h2>...GOAZEN ABIAPUNTURA...</h2>
             <br />
             <h5>{{ pregunta.pregunta }}</h5>
-            <div class="form-group">
+            <div class="form-group" *ngIf="pregunta.respuesta.length > 0 && i !== 3">
               <ul class="list-group">
                 <ng-container *ngFor="let opcion of pregunta.respuesta; let j = index">
-                  <li class="list-group-item" [ngClass]="{'img-buttons': preguntaActual === 2 && j < 10}">
-                    <div *ngIf="preguntaActual === 2 && j < 10" class="img-container"
+                  <li class="list-group-item" [ngClass]="{'img-buttons': i === 2 && j < 10}">
+                    <div *ngIf="i === 2 && j < 10" class="img-container"
                       [class.selected]="pregunta.seleccionado.includes(opcion.opcion)">
                       <img [src]="'../../assets/img/143' + (j + 1) + '.jpg'" alt=""
                         (click)="seleccionarVarias(preguntas[preguntaActual], opcion.opcion, !pregunta.seleccionado.includes(opcion.opcion))">
                     </div>
                     <!-- Selección única -->
-                    <div *ngIf="!preguntas[preguntaActual]['esMultiple']">
+                    <div *ngIf="!preguntas[i]['esMultiple']">
                       <div class="opcion-btn-container">
                         <button type="button" class="btn btn-primary opcion-btn"
                           [ngClass]="{'active': pregunta.seleccionado.includes(opcion.opcion)}"
-                          (click)="seleccionarRespuesta(preguntas[preguntaActual], opcion.opcion); verificarSeleccion()">
+                          (click)="seleccionarRespuesta(preguntas[i], opcion.opcion); verificarSeleccion()">
                           {{ opcion.opcion }}
                         </button>
                       </div>
                     </div>
-                    <!-- Selección múltiple -->
-                    <div *ngIf="preguntas[preguntaActual]['esMultiple'] && (preguntaActual !== 2 || j >= 10)">
-                      <div class="opcion-btn-container">
-                        <button type="button" class="btn btn-primary opcion-btn"
-                          [ngClass]="{'active': pregunta.seleccionado.includes(opcion.opcion)}"
-                          (click)="seleccionarVarias(preguntas[preguntaActual], opcion.opcion, !pregunta.seleccionado.includes(opcion.opcion)); verificarSeleccion()">
-                          {{ opcion.opcion }}
-                        </button>
-                      </div>
-                    </div>
+                    <!-- Resto de tu código para las otras preguntas -->
                   </li>
                 </ng-container>
               </ul>
             </div>
+            <!-- Selección múltiple -->
+            <div *ngIf="preguntas[i]['esMultiple'] && i === 3">
+              <div class="form-group">
+                <ul class="list-group">
+                  <div class="button-group">
+                    <ng-container *ngFor="let opcion of pregunta.respuesta; let j = index">
+                      <!-- Agrupa los botones en pares -->
+                      <ng-container *ngIf="j % 2 === 0">
+                        <li class="list-group-item">
+                          <button type="button" class="button btnCuarta"
+                            [class.active]="pregunta.seleccionado.includes(opcion.opcion)"
+                            (click)="seleccionarVarias(preguntas[i], opcion.opcion, !pregunta.seleccionado.includes(opcion.opcion)); verificarSeleccion()">
+                            {{ opcion.opcion }}
+                          </button>
+                          <!-- Verifica si existe una opción adicional para mostrar -->
+                          <button *ngIf="pregunta.respuesta[j + 1]" type="button" class="button btnCuarta"
+                            [class.active]="pregunta.seleccionado.includes(pregunta.respuesta[j + 1].opcion)"
+                            (click)="seleccionarVarias(preguntas[i], pregunta.respuesta[j + 1].opcion, !pregunta.seleccionado.includes(pregunta.respuesta[j + 1].opcion)); verificarSeleccion()">
+                            {{ pregunta.respuesta[j + 1].opcion }}
+                          </button>
+                        </li>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </ul>
+              </div>
+            </div>
+            <!-- Botón Siguiente -->
             <div class="form-group" style="text-align: center;">
               <button type="button" (click)="siguiente()" class="btn btn-warning" style="text-align: center;"
-                [disabled]="!haySeleccion || (preguntaActual === 3 && !validarOpcionesSeleccionadas(preguntas[preguntaActual]))">
-                Aurrera
+                [disabled]="!haySeleccion || (i === 3 && !validarOpcionesSeleccionadas(preguntas[i]))">
+                Siguiente
               </button>
             </div>
           </div>
@@ -104,7 +123,6 @@
     </ng-container>
   </div>
 </div>
-
 
 
 
@@ -117,7 +135,8 @@
           <br>
           <ul class="list-group">
             <li class="list-group-item">
-              Aquí aparecerán las distintas actividades que tendrá el usuario dependiendo de lo que haya respondido tal y como aparece en el Power Point.
+              Aquí aparecerán las distintas actividades que tendrá el usuario dependiendo de lo que haya respondido tal
+              y como aparece en el Power Point.
             </li>
           </ul>
           <br>

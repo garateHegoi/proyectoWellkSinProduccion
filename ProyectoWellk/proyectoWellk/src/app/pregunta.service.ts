@@ -58,7 +58,7 @@ export class PreguntaService {
       seleccionado: []
     },
     {
-      pregunta: 'Non eta nola nahiago duzu kirola? Bi opzio aukeratu behar dira, bakoitzetik bat',
+      pregunta: 'Non eta nola nahiago duzu kirola? (Bi opzio aukeratu behar dira, bakoitzetik bat)',
       respuesta: [
         { opcion: 'Bakarrik'},
         { opcion: 'Gende gehiagorekin'},

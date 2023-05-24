@@ -97,19 +97,22 @@ export class PreguntaComponent implements OnInit {
 
   // Agrega un método para validar las opciones seleccionadas en la cuarta pregunta
   validarOpcionesSeleccionadas(pregunta: Pregunta): boolean {
-    const opcionesSeleccionadas = pregunta.seleccionado.length;
-    const primerasSegundasOpcionesSeleccionadas = pregunta.respuesta
-      .slice(0, 2)
-      .every((opcion) => pregunta.seleccionado.includes(opcion.opcion));
-    const tercerasCuartasOpcionesSeleccionadas = pregunta.respuesta
-      .slice(2, 4)
-      .every((opcion) => pregunta.seleccionado.includes(opcion.opcion));
-    return (
-      opcionesSeleccionadas === 2 &&
-      !primerasSegundasOpcionesSeleccionadas &&
-      !tercerasCuartasOpcionesSeleccionadas
-    );
-  }
+    if (this.preguntaActual === 3) {
+      const opcionesSeleccionadas = pregunta.seleccionado.length;
+      const primerasSegundasOpcionesSeleccionadas = pregunta.respuesta
+        .slice(0, 2)
+        .every((opcion) => pregunta.seleccionado.includes(opcion.opcion));
+      const tercerasCuartasOpcionesSeleccionadas = pregunta.respuesta
+        .slice(2, 4)
+        .every((opcion) => pregunta.seleccionado.includes(opcion.opcion));
+      return (
+        opcionesSeleccionadas === 2 &&
+        !primerasSegundasOpcionesSeleccionadas &&
+        !tercerasCuartasOpcionesSeleccionadas
+      );
+    }
+    return true;
+  }  
 
   // Resto del código omitido
 
@@ -145,9 +148,19 @@ export class PreguntaComponent implements OnInit {
 
   bukatu() {
     this.preguntaActual = 999;
+
+    for (const pregunta of this.preguntas) {
+      pregunta.seleccionado = [];
+    }
+
+    this.form.email = '';
+    this.form.edad = null;
+
+    this.haySeleccion = false;
+    this.progressPorcentaje = 0;
     this.isLoggedIn = false;
   }
-  
+
   conversor() {
     const respuesta1 = this.preguntas[0].seleccionado[0];
     const respuesta2 = this.preguntas[1].seleccionado[0];
